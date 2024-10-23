@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import axios from 'axios';
 
 import niepidLogo from './th.jpeg';
+import cvrlogo from './cvr_logo.jpg';
 
 function Login() {
 
@@ -36,7 +37,7 @@ function Login() {
         try {
             const id = values.id
             const password = values.password
-            
+
             if (!id.trim()) setIdError('Id is required')
             if (!password.trim()) setPasswordError('Password is required')
 
@@ -68,7 +69,10 @@ function Login() {
             </header>
             <div style={styles.container}>
                 <div style={styles.infoContainer}>
-                    <img src={niepidLogo} alt="NIEPID Logo" style={styles.logo} />
+                    <div style={styles.logoContainer}>
+                        <img src={niepidLogo} alt="NIEPID Logo" style={styles.logo} />
+                        <img src={cvrlogo} alt="CVR Logo" style={styles.logo} />
+                    </div>
                     <h1 style={styles.instituteName}>
                         NATIONAL INSTITUTE FOR THE EMPOWERMENT OF PERSONS WITH INTELLECTUAL DISABILITIES (DIVYANGJAN)
                     </h1>
@@ -84,12 +88,12 @@ function Login() {
                         <div style={styles.formGroup}>
                             <div style={styles.error}>
                                 <label htmlFor="id" style={styles.label}>Id</label>
-                                &nbsp;&nbsp;&nbsp;
-                                {idError ? <label style={styles.errorLabel}>{idError}</label> : null}
+                                {idError ? <label style={styles.errorLabel}>&nbsp;&nbsp;&nbsp;{idError}</label> : null}
                             </div>
                             <input
                                 type="text"
                                 name="id"
+                                id="id"
                                 placeholder="id"
                                 onChange={(e) => {
                                     setValues({ ...values, [e.target.name]: e.target.value })
@@ -101,12 +105,12 @@ function Login() {
                         <div style={styles.formGroup}>
                             <div style={styles.error}>
                                 <label htmlFor="password" style={styles.label}>Password</label>
-                                &nbsp;&nbsp;&nbsp;
-                                {passwordError ? <label style={styles.errorLabel}>{passwordError}</label> : null}
+                                {passwordError ? <label style={styles.errorLabel}>&nbsp;&nbsp;&nbsp;{passwordError}</label> : null}
                             </div>
                             <input
                                 type="password"
                                 placeholder="Password"
+                                id="password"
                                 name="password"
                                 onChange={(e) => {
                                     setValues({ ...values, [e.target.name]: e.target.value })
@@ -181,6 +185,10 @@ const styles = {
     logo: {
         width: '150px',
         marginBottom: '1rem',
+    },
+    logoContainer: {
+        display: 'flex',
+        justifyContent: 'space-between'
     },
     instituteName: {
         fontSize: '1.5rem',
