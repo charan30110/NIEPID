@@ -16,7 +16,6 @@ function PrivateRoute() {
 
     useEffect(() => {
         if (!token || token.trim() === '') {
-            console.log("Not Authorized")
             generateError("Not Authorized")
             navigate('/');
         }

@@ -4,7 +4,6 @@ const jwt=require('jsonwebtoken')
 
 const checkUser=async(req,res)=>{
     try{
-        // console.log(req.body)
         const {id,password}=req.body;
 
         const user = await userModel.findOne({"id" : id})
@@ -12,7 +11,7 @@ const checkUser=async(req,res)=>{
         if(user && user.password === password){
             const userId=user.id
             const role=user.role
-            jwt.sign({user},"secret",(err,token)=>{
+            jwt.sign({user},"secret",(err,token)=>{ 
                 if(!err)
                     res.status(200).json({status : "success",token,role,userId})
                 else

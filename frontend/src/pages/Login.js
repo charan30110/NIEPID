@@ -4,12 +4,12 @@ import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 import axios from 'axios';
 
-import niepidLogo from './th.jpeg';
-import cvrlogo from './cvr_logo.jpg';
+import niepidLogo from './assets/th.jpeg';
+import cvrlogo from './assets/cvr_logo.jpg';
 
 function Login() {
 
-    const [cookies] = useCookies([]);
+    const [cookies, setCookie, removeCookie] = useCookies([]);
     const navigate = useNavigate();
     const [values, setValues] = useState({ id: "", password: "" });
 
@@ -19,16 +19,16 @@ function Login() {
     useEffect(() => {
         const role = localStorage.getItem("role")
         if (role && role.trim() !== '') {
-            window.open('/' + role, '_self');
+            generateError("Please logout first to login again!!!")
+            return navigate('/' + role);
         }
-        if (cookies.jwt) {
-            navigate("/");
-        }
+        localStorage.clear();
     }, [cookies, navigate])
 
     const generateError = (error) => {
         toast.error(error, {
             position: "top-right",
+            autoClose: 2000,
         });
     }
 
@@ -51,6 +51,7 @@ function Login() {
                     localStorage.setItem("userId", data.userId)
                     localStorage.setItem("role", data.role);
                     localStorage.setItem("token", data.token);
+                    setCookie("jwt", data.token, { path: ('/'+data.role) })
                     navigate("/" + data.role);
                 } else {
                     generateError('Invalid Credentials');
@@ -141,7 +142,7 @@ const headerStyles = {
         margin: 0,
         fontSize: '2vw',
     }
-};
+}
 
 const footerStyles = {
     footer: {

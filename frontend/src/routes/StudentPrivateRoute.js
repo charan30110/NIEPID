@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import {  toast } from "react-toastify";
 
@@ -10,10 +10,15 @@ function StudentPrivateRoute() {
         });
 
   const role = localStorage.getItem('role');
+  useEffect(() => {
+    if (!role || role.trim() !== 'student') {
+      generateError("Not a Student");
+    }
+  },[])
 
   if (role.trim() !== 'student') {
-    generateError("Not a Student");
-    return <Navigate to="/" replace />;
+    const path = "/" + role.trim();
+    return <Navigate to={path} replace />;
   }
 
   return <Outlet />;

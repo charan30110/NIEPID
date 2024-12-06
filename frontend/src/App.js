@@ -20,6 +20,7 @@ import Student from "./pages/Dashboards/Student"
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Routes>
         <Route exact path="/" element={<Login />} />
         <Route element={<PrivateRoute />}>
@@ -37,7 +38,6 @@ function App() {
           </Route>
         </Route>
       </Routes>
-      <ToastContainer/>
     </BrowserRouter>
   );
 }
