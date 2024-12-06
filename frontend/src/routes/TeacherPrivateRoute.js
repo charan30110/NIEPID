@@ -14,7 +14,7 @@ function TeacherPrivateRoute() {
     if (!role || role.trim() !== 'teacher') {
       generateError("Not a Teacher");
     }
-  }, [])
+  })
 
   if (role.trim() !== 'teacher') {
     const path = "/" + role.trim();

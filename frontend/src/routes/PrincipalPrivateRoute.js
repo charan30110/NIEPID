@@ -14,7 +14,7 @@ function PrincipalPrivateRoute() {
     if (!role || role.trim() !== 'principal') {
       generateError("Not a Principal");
     }
-  },[])
+  })
 
   if (role.trim() !== 'principal') {
     const path = "/" + role.trim();

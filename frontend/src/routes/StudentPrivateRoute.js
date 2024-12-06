@@ -14,7 +14,7 @@ function StudentPrivateRoute() {
     if (!role || role.trim() !== 'student') {
       generateError("Not a Student");
     }
-  },[])
+  })
 
   if (role.trim() !== 'student') {
     const path = "/" + role.trim();

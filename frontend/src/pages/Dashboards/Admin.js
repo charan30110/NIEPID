@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 
 
 function Admin() {
-  const [cookies,setCookie, removeCookie] = useCookies([]);
+  const [cookies, , removeCookie] = useCookies([]);
   const navigate = useNavigate();
 
   const handleLogout = () => {

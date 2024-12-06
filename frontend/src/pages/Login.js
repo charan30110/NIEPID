@@ -9,7 +9,7 @@ import cvrlogo from './assets/cvr_logo.jpg';
 
 function Login() {
 
-    const [cookies, setCookie, removeCookie] = useCookies([]);
+    const [cookies, setCookie] = useCookies([]);
     const navigate = useNavigate();
     const [values, setValues] = useState({ id: "", password: "" });
 

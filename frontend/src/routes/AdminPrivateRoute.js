@@ -14,7 +14,7 @@ function AdminPrivateRoute() {
     if (!role || role.trim() !== 'admin') {
       generateError("Not a Admin");
     }
-  },[])
+  })
 
   if (role.trim() !== 'admin') {
     const path = "/" + role.trim();
