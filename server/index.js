@@ -14,7 +14,10 @@ const studentRoutes = require('./routes/student.routes')
 
 const {verifyToken,isAdmin,isStudent,isTeacher,isPrinciple}=require('./middlewares/authorization')
 
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 
 mongoose.connect("mongodb://127.0.0.1:27017/niepid")
     .then((res) => { console.log("connected successfully") })

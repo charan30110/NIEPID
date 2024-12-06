@@ -16,17 +16,34 @@ function Admin() {
     navigate('/');
   };
 
+  const Header = () => (
+    <header style={styles.header}>
+      <div style={styles.logo}>
+        <img src={image} alt="Logo" style={styles.logoImage} />
+        <span style={styles.logoLabel}>NIEPID</span>
+      </div>
+      <button onClick={handleLogout} style={styles.logoutButton}>
+        Logout
+      </button>
+    </header>
+  )
+
+  const Footer = () => (
+    <footer style={styles.footer}>
+      <p>&copy; 2024 Admin Dashboard. All rights reserved.</p>
+    </footer>
+  )
+
   return (
-    <div>
-      <header style={styles.header}>
-        <div style={styles.logo}>
-          <img src={image} alt="Logo" style={styles.logoImage} />
-          <span style={styles.logoLabel}>NIEPID</span>
-        </div>
-        <button onClick={handleLogout} style={styles.logoutButton}>
-          Logout
-        </button>
-      </header>
+    <div style={styles.container}>
+      <Header />
+      <div style={styles.hero}>
+        <h1 style={styles.heroTitle}>Welcome to Our Website</h1>
+        <p style={styles.heroSubtitle}>
+          Explore our services and get to know us better.
+        </p>
+      </div>
+      <Footer/>
     </div>
   )
 }
@@ -60,19 +77,6 @@ const styles = {
   logoLabel: {
     fontSize: '1.5rem',
   },
-  navLinks: {
-    display: 'flex',
-    gap: '1.5rem',
-  },
-  navLink: {
-    color: '#ffffff',
-    textDecoration: 'none',
-    fontSize: '1rem',
-    transition: 'color 0.3s',
-  },
-  navLinkHover: {
-    color: '#cccccc',
-  },
   hero: {
     display: 'flex',
     flexDirection: 'column',
@@ -92,96 +96,11 @@ const styles = {
     color: '#666666',
     marginBottom: '2rem',
   },
-  button: {
-    padding: '0.8rem 1.5rem',
-    fontSize: '1rem',
-    backgroundColor: '#007bff',
-    color: '#ffffff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s, transform 0.3s',
-    margin: '0.5rem',
-    width: '100%',
-  },
-  buttonHover: {
-    backgroundColor: '#0056b3',
-    transform: 'scale(1.05)',
-  },
   footer: {
     textAlign: 'center',
     padding: '1rem',
     backgroundColor: '#007bff',
     color: '#ffffff',
-  },
-  adminContainer: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    padding: '2rem',
-    backgroundColor: '#f0f8ff',
-  },
-  halfContainer: {
-    flex: '1 1 45%',
-    backgroundColor: '#ffffff',
-    padding: '2rem',
-    borderRadius: '10px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    margin: '1rem',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  h1: {
-    fontSize: '2rem',
-    marginBottom: '1rem',
-  },
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: '1rem',
-    width: '100%',
-  },
-  label: {
-    fontSize: '1rem',
-    marginBottom: '0.5rem',
-  },
-  input: {
-    padding: '0.5rem',
-    fontSize: '1rem',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-    width: '100%',
-  },
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%',
-  },
-  buttonWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: '1rem',
-    width: '100%',
-  },
-  buttonDescription: {
-    fontSize: '0.9rem',
-    color: '#666',
-    textAlign: 'center',
-    marginTop: '0.5rem',
-  },
-  uploadStatus: {
-    color: '#ff0000',
-    marginTop: '1rem',
-    textAlign: 'center',
-  },
-  b1: {
-    fontSize: '0.9rem',
-    color: '#666',
-    textAlign: 'center',
-    marginTop: '0.5rem',
-
   },
   logoutButton: {
     padding: '10px 15px',
@@ -191,9 +110,6 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
-  },
-  logoutButtonHover: {
-    backgroundColor: '#e60000',
   }
 };
 

@@ -1,34 +1,39 @@
-const userModel=require('../models/user.model')
+const userModel = require('../models/user.model')
 
-const jwt=require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
-const checkUser=async(req,res)=>{
-    try{
-        const {id,password}=req.body;
+const checkUser = async (req, res) => {
+    try {
+        const { id, password } = req.body;
 
-        const user = await userModel.findOne({"id" : id})
-        
-        if(user && user.password === password){
-            const userId=user.id
-            const role=user.role
-            jwt.sign({user},"secret",(err,token)=>{ 
-                if(!err)
-                    res.status(200).json({status : "success",token,role,userId})
+        const user = await userModel.findOne({ "id": id })
+
+        if (user && user.password === password) {
+            const userId = user.id
+            const role = user.role
+            jwt.sign({ user }, "secret", (err, token) => {
+                if (!err) {
+                    res.cookie("jwt", token, {
+                        path: "/",
+                        maxAge: 3600*1000
+                    })
+                    res.status(200).json({ status: "success", token, role, userId })
+                }
                 else
                     res.status(500).json("jwt error")
             })
         }
-        else{
+        else {
             res.status(401).json("invalid credentials")
         }
 
     }
-    catch(error){
+    catch (error) {
         res.status(500).json("Internal Server Error")
     }
 }
 
 
-module.exports={
+module.exports = {
     checkUser
 }

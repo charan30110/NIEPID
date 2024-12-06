@@ -9,7 +9,7 @@ import cvrlogo from './assets/cvr_logo.jpg';
 
 function Login() {
 
-    const [cookies, setCookie] = useCookies([]);
+    const [cookies] = useCookies([]);
     const navigate = useNavigate();
     const [values, setValues] = useState({ id: "", password: "" });
 
@@ -43,15 +43,16 @@ function Login() {
 
             if (id.trim() && password.trim()) {
                 const response = await axios.post("http://localhost:4001/login",
-                    { id: id, password: password }
+                    { id: id, password: password },
+                    {withCredentials:true}
                 );
 
                 if (response.status === 200) {
                     const data = response.data;
                     localStorage.setItem("userId", data.userId)
                     localStorage.setItem("role", data.role);
-                    localStorage.setItem("token", data.token);
-                    setCookie("jwt", data.token, { path: ('/'+data.role) })
+                    // localStorage.setItem("token", data.token); --> added in cookies
+                    // setCookie("jwt", data.token, { path: ('/'+data.role) }) --> login controller
                     navigate("/" + data.role);
                 } else {
                     generateError('Invalid Credentials');
