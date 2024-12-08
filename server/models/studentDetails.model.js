@@ -57,17 +57,17 @@ const historySchema = new mongoose.Schema({
     deliveryType: { type: String },
     abnormalPresentation: { type: String },
     respiratoryDistress: { type: String },
-    jaundice2:{type:String},
+    jaundice2: { type: String },
     deliveryConductedBy: { type: String },
     labourInduction: { type: String },
     birthCry: { type: String },
-    infection2:{type:String},
+    infection2: { type: String },
     separationFromMotherImmediatelyAfterDelivery: { type: String },
-    jaundice3:{type:String},
+    jaundice3: { type: String },
     thyroidDysfunctions: { type: String },
     nutritionalDisorders: { type: String },
-    convulsion2:{type:String},
-    infections3:{type:String},
+    convulsion2: { type: String },
+    infections3: { type: String },
     significantHeadInjury: { type: String }
 });
 
@@ -142,8 +142,8 @@ const developmentHistorySchema = new mongoose.Schema({
 });
 
 const stdSchema = new mongoose.Schema({
-    info:{
-            regNo: {
+    info: {
+        regNo: {
             type: String,
             unique: true,
             required: true
@@ -153,9 +153,9 @@ const stdSchema = new mongoose.Schema({
             required: true
         },
         dob: { type: Date },
-        name: { 
+        name: {
             type: String,
-            required:true
+            required: true
         },
         sex: {
             type: String,
