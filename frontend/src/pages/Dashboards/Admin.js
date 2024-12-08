@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import image from '../assets/th.jpeg';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import axios from 'axios'
 
 
 function Admin() {
   const [cookies, , removeCookie] = useCookies([]);
   const navigate = useNavigate();
+
+  const [fileUploadStatus, setFileUploadStatus] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null)
 
   const handleLogout = () => {
     localStorage.clear();
@@ -17,22 +21,62 @@ function Admin() {
   };
 
   const Header = () => (
-    <header style={styles.header}>
-      <div style={styles.logo}>
-        <img src={image} alt="Logo" style={styles.logoImage} />
-        <span style={styles.logoLabel}>NIEPID</span>
+    <header style={headerStyles.header}>
+      <div style={headerStyles.logo}>
+        <img src={image} alt="Logo" style={headerStyles.logoImage} />
+        <span style={headerStyles.logoLabel}>NIEPID</span>
       </div>
-      <button onClick={handleLogout} style={styles.logoutButton}>
+      <button onClick={handleLogout} style={headerStyles.logoutButton}>
         Logout
       </button>
     </header>
   )
 
   const Footer = () => (
-    <footer style={styles.footer}>
+    <footer style={footerStyles.footer}>
       <p>&copy; 2024 Admin Dashboard. All rights reserved.</p>
     </footer>
   )
+
+  const handleTeacherRegister = () => {
+
+  }
+
+  const handleViewTeacher = () => {
+
+  }
+
+  const handleDownloadFile = async () => {
+    try {
+      console.log("Hi")
+      const res = await axios.get('http://localhost:4001/admin/downloadExcel', {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.jwt}`,
+        },
+        responseType: 'blob',
+        maxRedirects: 0,
+        withCredentials: true
+      })
+      if (res.status === 200) {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'untitled.xlsx'); // Change 'sampleDataTeacher.xlsx' to the name you want
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        console.log('Error Downloading File : ',res.data)
+      }
+    } catch (error) {
+      console.log('Error Downloading file : ', error)
+    }
+  }
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0])
+  }
 
   return (
     <div style={styles.container}>
@@ -43,7 +87,41 @@ function Admin() {
           Explore our services and get to know us better.
         </p>
       </div>
-      <Footer/>
+      <div style={styles.adminContainer}>
+        <div style={styles.halfContainer}>
+          <h1 style={styles.h1}>Teachers</h1>
+          <form onSubmit={handleTeacherRegister} style={styles.formGroup}>
+            <div style={styles.buttonContainer}>
+              <div style={styles.buttonWrapper}>
+                <button type="button" onClick={handleViewTeacher} style={styles.button}>
+                  View
+                </button>
+                <p style={styles.buttonDescription}>View registered teachers.</p>
+              </div>
+              <div style={styles.buttonWrapper}>
+                <button type="button" onClick={handleDownloadFile} style={styles.button}>
+                  Download Spreadsheet
+                </button>
+                <p style={styles.buttonDescription}>Download the teacher spreadsheet.</p>
+              </div>
+              <div style={styles.buttonWrapper}>
+                <label style={styles.label}>Upload Excel File(.xls, .xlsx, .csv):</label>
+                <input type="file" accept='.xls, .xlsx, .csv' onChange={handleFileChange} style={styles.input} />
+              </div>
+              <div style={styles.buttonWrapper}>
+                <button type="submit" style={styles.button}>
+                  Register
+                </button>
+                <p style={styles.buttonDescription}>Upload and register new teachers.</p>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div style={styles.halfContainer}>
+          <h1 style={styles.h1}>Students</h1>
+        </div>
+      </div>
+      <Footer />
     </div>
   )
 }
@@ -56,6 +134,125 @@ const styles = {
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     backgroundColor: '#f0f8ff',
   },
+  navLinks: {
+    display: 'flex',
+    gap: '1.5rem',
+  },
+  navLink: {
+    color: '#ffffff',
+    textDecoration: 'none',
+    fontSize: '1rem',
+    transition: 'color 0.3s',
+  },
+  navLinkHover: {
+    color: '#cccccc',
+  },
+  hero: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexGrow: 1,
+    padding: '1.5rem',
+    textAlign: 'center',
+  },
+  heroTitle: {
+    fontSize: '3rem',
+    color: '#333333',
+    margin: '1rem'
+  },
+  heroSubtitle: {
+    fontSize: '1.5rem',
+    color: '#666666',
+    margin: '0.5rem'
+  },
+  button: {
+    padding: '0.8rem 1.5rem',
+    fontSize: '1rem',
+    backgroundColor: '#007bff',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s, transform 0.3s',
+    margin: '0.5rem',
+    width: '100%',
+  },
+  buttonHover: {
+    backgroundColor: '#0056b3',
+    transform: 'scale(1.05)',
+  },
+  adminContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    padding: '2rem',
+    backgroundColor: '#f0f8ff',
+  },
+  halfContainer: {
+    flex: '1 1 45%',
+    backgroundColor: '#ffffff',
+    padding: '2rem',
+    borderRadius: '10px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    margin: '1rem',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  h1: {
+    fontSize: '2rem',
+    marginBottom: '1rem',
+  },
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: '1rem',
+    width: '100%',
+  },
+  label: {
+    fontSize: '1rem',
+    marginBottom: '0.5rem',
+  },
+  input: {
+    padding: '0.5rem',
+    fontSize: '1rem',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
+    width: '100%',
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+  },
+  buttonWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: '1rem',
+    width: '100%',
+  },
+  buttonDescription: {
+    fontSize: '0.9rem',
+    color: '#666',
+    textAlign: 'center',
+    marginTop: '0.5rem',
+  },
+  uploadStatus: {
+    color: '#ff0000',
+    marginTop: '1rem',
+    textAlign: 'center',
+  },
+  b1: {
+    fontSize: '0.9rem',
+    color: '#666',
+    textAlign: 'center',
+    marginTop: '0.5rem',
+  },
+};
+
+const headerStyles = {
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -77,31 +274,6 @@ const styles = {
   logoLabel: {
     fontSize: '1.5rem',
   },
-  hero: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexGrow: 1,
-    padding: '2rem',
-    textAlign: 'center',
-  },
-  heroTitle: {
-    fontSize: '3rem',
-    color: '#333333',
-    marginBottom: '1rem',
-  },
-  heroSubtitle: {
-    fontSize: '1.5rem',
-    color: '#666666',
-    marginBottom: '2rem',
-  },
-  footer: {
-    textAlign: 'center',
-    padding: '1rem',
-    backgroundColor: '#007bff',
-    color: '#ffffff',
-  },
   logoutButton: {
     padding: '10px 15px',
     backgroundColor: '#ff4d4d',
@@ -110,7 +282,16 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
-  }
-};
+  },
+}
+
+const footerStyles = {
+  footer: {
+    textAlign: 'center',
+    padding: '0.1vw',
+    backgroundColor: '#007bff',
+    color: '#ffffff',
+  },
+}
 
 export default Admin

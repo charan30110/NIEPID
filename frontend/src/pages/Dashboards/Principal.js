@@ -17,19 +17,19 @@ function Principal() {
   };
 
   const Header = () => (
-    <header style={styles.header}>
-      <div style={styles.logo}>
-        <img src={image} alt="Logo" style={styles.logoImage} />
-        <span style={styles.logoLabel}>NIEPID</span>
+    <header style={headerStyles.header}>
+      <div style={headerStyles.logo}>
+        <img src={image} alt="Logo" style={headerStyles.logoImage} />
+        <span style={headerStyles.logoLabel}>NIEPID</span>
       </div>
-      <button onClick={handleLogout} style={styles.logoutButton}>
+      <button onClick={handleLogout} style={headerStyles.logoutButton}>
         Logout
       </button>
     </header>
   )
 
   const Footer = () => (
-    <footer style={styles.footer}>
+    <footer style={footerStyles.footer}>
       <p>&copy; 2024 Principal Dashboard. All rights reserved.</p>
     </footer>
   )
@@ -56,6 +56,28 @@ const styles = {
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     backgroundColor: '#f0f8ff',
   },
+  hero: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexGrow: 1,
+    padding: '2rem',
+    textAlign: 'center',
+  },
+  heroTitle: {
+    fontSize: '3rem',
+    color: '#333333',
+    marginBottom: '1rem',
+  },
+  heroSubtitle: {
+    fontSize: '1.5rem',
+    color: '#666666',
+    marginBottom: '2rem',
+  },
+};
+
+const headerStyles = {
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -77,31 +99,6 @@ const styles = {
   logoLabel: {
     fontSize: '1.5rem',
   },
-  hero: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexGrow: 1,
-    padding: '2rem',
-    textAlign: 'center',
-  },
-  heroTitle: {
-    fontSize: '3rem',
-    color: '#333333',
-    marginBottom: '1rem',
-  },
-  heroSubtitle: {
-    fontSize: '1.5rem',
-    color: '#666666',
-    marginBottom: '2rem',
-  },
-  footer: {
-    textAlign: 'center',
-    padding: '1rem',
-    backgroundColor: '#007bff',
-    color: '#ffffff',
-  },
   logoutButton: {
     padding: '10px 15px',
     backgroundColor: '#ff4d4d',
@@ -110,7 +107,16 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
-  }
-};
+  },
+}
+
+const footerStyles = {
+  footer: {
+    textAlign: 'center',
+    padding: '0.1vw',
+    backgroundColor: '#007bff',
+    color: '#ffffff',
+  },
+}
 
 export default Principal
