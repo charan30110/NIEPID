@@ -9,21 +9,23 @@ import cvrlogo from './assets/cvr_logo.jpg';
 
 function Login() {
 
-    const [cookies] = useCookies([]);
+    const [cookies, , removeCookie] = useCookies([]);
     const navigate = useNavigate();
     const [values, setValues] = useState({ id: "", password: "" });
 
     const [idError, setIdError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
+    const role = localStorage.getItem("role")
+    const userId = localStorage.getItem("userId")
     useEffect(() => {
-        const role = localStorage.getItem("role")
-        if (role && role.trim() !== '') {
+        if (role && role.trim() !== '' && userId && cookies.jwt) {
             generateError("Please logout first to login again!!!")
             return navigate('/' + role);
         }
         localStorage.clear();
-    }, [cookies, navigate])
+        removeCookie("jwt")
+    }, [cookies, removeCookie, navigate, role, userId])
 
     const generateError = (error) => {
         toast.error(error, {
@@ -44,7 +46,7 @@ function Login() {
             if (id.trim() && password.trim()) {
                 const response = await axios.post("http://localhost:4001/login",
                     { id: id, password: password },
-                    {withCredentials:true}
+                    { withCredentials: true }
                 );
 
                 if (response.status === 200) {
@@ -153,7 +155,6 @@ const footerStyles = {
         color: '#ffffff',
         position: 'relative',
         bottom: 0,
-        width: '100%',
     },
     text: {
         margin: 0,

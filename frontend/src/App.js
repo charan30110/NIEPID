@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Login from "./pages/Login";
+import PageNotFound from "./pages/PageNotFound";
 
 import PrivateRoute from "./routes/PrivateRoute"
 import AdminPrivateRoute from "./routes/AdminPrivateRoute"
@@ -37,6 +38,7 @@ function App() {
             <Route exact path="/student" element={<Student />} />
           </Route>
         </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );

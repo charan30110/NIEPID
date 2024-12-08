@@ -10,11 +10,16 @@ function TeacherPrivateRoute() {
     });
 
   const role = localStorage.getItem('role');
+  const userId = localStorage.getItem('userId');
   useEffect(() => {
     if (!role || role.trim() !== 'teacher') {
       generateError("Not a Teacher");
     }
   })
+
+  if (!role || !userId) {
+    return <Navigate to="/" replace />
+  }
 
   if (role.trim() !== 'teacher') {
     const path = "/" + role.trim();

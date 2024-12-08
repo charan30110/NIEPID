@@ -10,11 +10,16 @@ function PrincipalPrivateRoute() {
     });
 
   const role = localStorage.getItem('role');
+  const userId = localStorage.getItem('userId');
   useEffect(() => {
     if (!role || role.trim() !== 'principal') {
       generateError("Not a Principal");
     }
   })
+
+  if (!role || !userId) {
+    return <Navigate to="/" replace />
+  }
 
   if (role.trim() !== 'principal') {
     const path = "/" + role.trim();
