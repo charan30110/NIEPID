@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import image from '../assets/th.jpeg';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios'
+import { FaQuestionCircle } from 'react-icons/fa'
 
+import image from '../assets/th.jpeg';
+import excelImage from '../assets/excelExample.png'
 
 function Admin() {
   const [cookies, , removeCookie] = useCookies([]);
@@ -11,6 +13,7 @@ function Admin() {
 
   const [fileUploadStatus, setFileUploadStatus] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
+  const [isExcelImageOpen, setIsExcelImageOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -37,6 +40,14 @@ function Admin() {
       <p>&copy; 2024 Admin Dashboard. All rights reserved.</p>
     </footer>
   )
+
+  const handleOpenModal = () => {
+    setIsExcelImageOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsExcelImageOpen(false);
+  };
 
   const handleTeacherRegister = () => {
 
@@ -67,7 +78,7 @@ function Admin() {
         link.click();
         document.body.removeChild(link);
       } else {
-        console.log('Error Downloading File : ',res.data)
+        console.log('Error Downloading File : ', res.data)
       }
     } catch (error) {
       console.log('Error Downloading file : ', error)
@@ -112,6 +123,7 @@ function Admin() {
                 <button type="submit" style={styles.button}>
                   Register
                 </button>
+                <FaQuestionCircle onClick={handleOpenModal} style={{ cursor: 'pointer' }} size={24} color='grey' />
                 <p style={styles.buttonDescription}>Upload and register new teachers.</p>
               </div>
             </div>
@@ -122,6 +134,15 @@ function Admin() {
         </div>
       </div>
       <Footer />
+      {isExcelImageOpen && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalContent}>
+            <span style={styles.closeButton} onClick={handleCloseModal}>&times;</span>
+            <p style={styles.modalText}>Sample Teacher Details</p>
+            <img src={excelImage} alt="Excel File Preview" style={styles.image} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -249,6 +270,45 @@ const styles = {
     color: '#666',
     textAlign: 'center',
     marginTop: '0.5rem',
+  },
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  modalContent: {
+    position: 'relative',
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '8px',
+    maxWidth: '90%',
+    maxHeight: '90%',
+    overflow: 'auto',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    textAlign: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    fontSize: '30px',
+    cursor: 'pointer',
+    fontWeight: 'bold'
+  },
+  modalText: {
+    fontSize: '1.5vw'
+  },
+  image: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
   },
 };
 
