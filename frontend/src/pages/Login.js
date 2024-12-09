@@ -28,6 +28,7 @@ function Login() {
     }, [cookies, removeCookie, navigate, role, userId])
 
     const generateError = (error) => {
+        toast.dismiss()
         toast.error(error, {
             position: "top-right",
             autoClose: 2000,

@@ -4,10 +4,12 @@ import { toast } from "react-toastify";
 
 function PrincipalPrivateRoute() {
 
-  const generateError = (error) =>
+  const generateError = (error) => {
+    toast.dismiss()
     toast.error(error, {
       position: "top-right",
     });
+  }
 
   const role = localStorage.getItem('role');
   const userId = localStorage.getItem('userId');

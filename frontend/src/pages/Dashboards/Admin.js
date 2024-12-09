@@ -1,19 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios'
 import { FaQuestionCircle } from 'react-icons/fa'
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import image from '../assets/th.jpeg';
-import excelImage from '../assets/excelExample.png'
+import excelImage from '../assets/excelExample1.png'
 
 function Admin() {
   const [cookies, , removeCookie] = useCookies([]);
   const navigate = useNavigate();
 
-  const [fileUploadStatus, setFileUploadStatus] = useState('')
+  // const [fileUploadStatus, setFileUploadStatus] = useState('')
+  const [fileSelectStatus, setFileSelectStatus] = useState(false)
   const [selectedFile, setSelectedFile] = useState(null)
   const [isExcelImageOpen, setIsExcelImageOpen] = useState(false);
+
+  useEffect(() => {
+    if (!selectedFile) {
+      setFileSelectStatus(false)
+    } else {
+      setFileSelectStatus(true)
+    }
+  }, [selectedFile])
 
   const handleLogout = () => {
     localStorage.clear();
@@ -49,15 +61,50 @@ function Admin() {
     setIsExcelImageOpen(false);
   };
 
-  const handleTeacherRegister = () => {
+  const handleBulkTeacherRegister = async (e) => {
+    e.preventDefault()
+    try {
+      if (!fileSelectStatus) {
+        toast.dismiss()
+        toast.error("Select a File", { position: 'top-right' })
+        return;
+      } else {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        let res = await axios.post('http://localhost:4001/admin/registerBulkTeacher', formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${cookies.jwt}`,
+          },
+          withCredentials: true
+        })
+          .catch((error) => {
+            console.log("Error uploading file : ", error)
+            toast.dismiss()
+            toast.error('Error uploading File', { position: 'top-right' })
+          })
+        if (res) {
+          // console.log(res)
+          toast.dismiss()
+          toast.success('File Uploaded successfully', { position: 'top-right' })
+          toast.success(`Number of records = ${res.data.noOfRows}`, { position: 'top-right', autoClose: 2000 })
+          toast.success(`${res.data.uploaded} records uploaded`, { position: 'top-right', autoClose: 2000 })
+        }
+      }
+    } catch (error) {
+      console.log("Error uploading file : ", error)
+      toast.dismiss()
+      toast.error('Error uploading File', { position: 'top-right' })
+    }
+  }
+
+  const handleViewTeacher = (e) => {
+    e.preventDefault()
 
   }
 
-  const handleViewTeacher = () => {
-
-  }
-
-  const handleDownloadFile = async () => {
+  const handleDownloadFile = async (e) => {
+    e.preventDefault()
     try {
       console.log("Hi")
       const res = await axios.get('http://localhost:4001/admin/downloadExcel', {
@@ -101,7 +148,7 @@ function Admin() {
       <div style={styles.adminContainer}>
         <div style={styles.halfContainer}>
           <h1 style={styles.h1}>Teachers</h1>
-          <form onSubmit={handleTeacherRegister} style={styles.formGroup}>
+          <form onSubmit={(e) => handleBulkTeacherRegister(e)} style={styles.formGroup}>
             <div style={styles.buttonContainer}>
               <div style={styles.buttonWrapper}>
                 <button type="button" onClick={handleViewTeacher} style={styles.button}>
@@ -140,6 +187,7 @@ function Admin() {
             <span style={styles.closeButton} onClick={handleCloseModal}>&times;</span>
             <p style={styles.modalText}>Sample Teacher Details</p>
             <img src={excelImage} alt="Excel File Preview" style={styles.image} />
+            <p style={styles.modalText}>(Note : Refresh the page before uploading a file)</p>
           </div>
         </div>
       )}

@@ -6,10 +6,11 @@ import { useCookies } from 'react-cookie';
 function PrivateRoute() {
 
     const navigate = useNavigate();
-    const [cookies, ,removeCookies] = useCookies();
+    const [cookies, , removeCookies] = useCookies();
     const token = localStorage.getItem('token');
 
     const generateError = (error) => {
+        toast.dismiss()
         toast.error(error, {
             position: "top-right",
         });
@@ -22,8 +23,8 @@ function PrivateRoute() {
             generateError("Not Authorized")
             navigate('/');
         }
-    },[navigate,token,cookies,removeCookies]);
-    
+    }, [navigate, token, cookies, removeCookies]);
+
     return (
         <>
             {cookies.jwt ? <Outlet /> : null}
