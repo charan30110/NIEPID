@@ -18,6 +18,8 @@ import Principal from "./pages/Dashboards/Principal"
 import Teacher from "./pages/Dashboards/Teacher"
 import Student from "./pages/Dashboards/Student"
 
+import ViewTeachers from "./pages/Routes/Admin/ViewTeachers";
+
 function App() {
   return (
     <BrowserRouter>
@@ -27,6 +29,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route element={<AdminPrivateRoute />}>
             <Route exact path="/admin" element={<Admin />} />
+            <Route exact path="/admin/viewTeachers" element={<ViewTeachers />} />
           </Route>
           <Route element={<PrincipalPrivateRoute />}>
             <Route exact path="/principal" element={<Principal />} />

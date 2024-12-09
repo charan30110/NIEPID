@@ -100,7 +100,7 @@ function Admin() {
 
   const handleViewTeacher = (e) => {
     e.preventDefault()
-
+    navigate('viewTeachers/')
   }
 
   const handleDownloadFile = async (e) => {
