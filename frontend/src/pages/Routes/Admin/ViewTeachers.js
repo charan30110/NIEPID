@@ -151,15 +151,24 @@ function ViewTeachers() {
     navigate('/');
   };
 
+  const handleBack = () => {
+    navigate('/admin');
+  }
+
   const Header = () => (
     <header style={headerStyles.header}>
       <div style={headerStyles.logo}>
         <img src={image} alt="Logo" style={headerStyles.logoImage} />
         <span style={headerStyles.logoLabel}>NIEPID</span>
       </div>
-      <button onClick={handleLogout} style={headerStyles.logoutButton}>
-        Logout
-      </button>
+      <div style={headerStyles.buttonContainer}>
+        <button onClick={handleBack} style={headerStyles.backButton}>
+          Back
+        </button>
+        <button onClick={handleLogout} style={headerStyles.logoutButton}>
+          Logout
+        </button>
+      </div>
     </header>
   )
 
@@ -200,7 +209,7 @@ function ViewTeachers() {
                 <th style={styles.th} key={header}>
                   {index < headers.length - 1 && (
                     <>
-                      <div style={{display:'flex',justifyContent:'space-between'}}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         {header}
                         <FaSearch
                           color='#555'
@@ -499,8 +508,8 @@ const styles = {
     transition: 'background-color 0.3s ease',
   },
   searchIcon: {
-    marginTop:'3px',
-    marginRight:'3px',
+    marginTop: '3px',
+    marginRight: '3px',
     cursor: 'pointer',
     fontSize: '14px',
   },
@@ -537,14 +546,30 @@ const headerStyles = {
     fontSize: '1.5rem',
   },
   logoutButton: {
-    padding: '10px 15px',
-    backgroundColor: '#ff4d4d',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
+    padding: "0.8rem 1.5rem",
+    fontSize: "1rem",
+    backgroundColor: "#ff4d4d",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "background-color 0.3s, transform 0.3s",
   },
+  backButton: {
+    padding: "0.8rem 1.5rem",
+    fontSize: "1rem",
+    backgroundColor: "#000000",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "background-color 0.3s, transform 0.3s",
+  },
+  buttonContainer:{
+    width:'18%',
+    display:'flex',
+    justifyContent:'space-between'
+  }
 }
 
 const footerStyles = {
