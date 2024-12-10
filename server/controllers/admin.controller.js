@@ -19,7 +19,6 @@ const downloadExcel = async (req, res) => {
 }
 
 const registerBulkTeacher = async (req, res) => {
-
     try {
         const data = req.file.buffer
         const workbook = xlsx.read(data, { type: 'buffer' })
@@ -147,7 +146,40 @@ const registerBulkTeacher = async (req, res) => {
     }
 }
 
+const viewTeachers = async (req, res) => {
+    try {
+        const teachers = await teacherModel.find({})
+        if (teachers) {
+            res.status(200).json({ details: teachers, data: 'success' })
+        } else {
+            res.status(400).send("No Teachers exist")
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Error viewing Teachers")
+    }
+}
+
+const updateSingleTeacher = async (req, res) => {
+    const session = await mongoose.startSession()
+    session.startTransaction()
+    try {
+        const { selectedTeacherDetails, method } = req.body;
+        
+        res.status(200).send("success")
+        session.commitTransaction()
+    } catch (error) {
+        session.abortTransaction()
+        console.log(error)
+        res.status(500).send("Error updating Teacher")
+    } finally {
+        session.endSession()
+    }
+}
+
 module.exports = {
     downloadExcel,
-    registerBulkTeacher
+    registerBulkTeacher,
+    viewTeachers,
+    updateSingleTeacher,
 }
