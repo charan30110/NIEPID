@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
@@ -19,6 +20,8 @@ import Teacher from "./pages/Dashboards/Teacher"
 import Student from "./pages/Dashboards/Student"
 
 import ViewTeachers from "./pages/Routes/Admin/ViewTeachers";
+import ViewStudents from "./pages/Routes/Admin/ViewStudents";
+import RegisterStudent from "./pages/Routes/Admin/RegisterStudent";
 
 function App() {
   return (
@@ -30,6 +33,8 @@ function App() {
           <Route element={<AdminPrivateRoute />}>
             <Route exact path="/admin" element={<Admin />} />
             <Route exact path="/admin/viewTeachers" element={<ViewTeachers />} />
+            <Route exact path="/admin/viewStudents" element={<ViewStudents />} />
+            <Route exact path="/admin/registerStudent" element={<RegisterStudent />} />
           </Route>
           <Route element={<PrincipalPrivateRoute />}>
             <Route exact path="/principal" element={<Principal />} />

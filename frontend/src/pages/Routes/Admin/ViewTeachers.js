@@ -11,7 +11,7 @@ import image from '../../assets/th.jpeg'
 
 function ViewTeachers() {
 
-  const [cookies, , removeCookie] = useCookies()
+  const [cookies, , ] = useCookies()
   const navigate = useNavigate()
   const headers = ["ID", "Name", "Email", "Mobile", "Class ID", "Actions"];
 
@@ -143,16 +143,8 @@ function ViewTeachers() {
     setFilteredDetails(filtered);
   }, [searchQueries, teacherDetails]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    Object.keys(cookies).forEach((cookieName) => {
-      removeCookie(cookieName, { path: '/' });
-    });
-    navigate('/');
-  };
-
   const handleBack = () => {
-    navigate('/admin');
+    navigate(-1);
   }
 
   const Header = () => (
@@ -161,14 +153,9 @@ function ViewTeachers() {
         <img src={image} alt="Logo" style={headerStyles.logoImage} />
         <span style={headerStyles.logoLabel}>NIEPID</span>
       </div>
-      <div style={headerStyles.buttonContainer}>
-        <button onClick={handleBack} style={headerStyles.backButton}>
-          Back
-        </button>
-        <button onClick={handleLogout} style={headerStyles.logoutButton}>
-          Logout
-        </button>
-      </div>
+      <button onClick={handleBack} style={headerStyles.backButton}>
+        Back
+      </button>
     </header>
   )
 
@@ -200,65 +187,67 @@ function ViewTeachers() {
   return (
     <div style={styles.container}>
       <Header />
-      <div style={styles.subContainer}>
-        <h1 style={styles.heading}>Teacher Details</h1>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              {headers.map((header, index) => (
-                <th style={styles.th} key={header}>
-                  {index < headers.length - 1 && (
-                    <>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        {header}
-                        <FaSearch
-                          color='#555'
-                          style={styles.searchIcon}
-                          onClick={() => toggleSearchField(Object.keys(searchQueries)[index])}
-                        />
-                      </div>
-                      {visibleSearchFields[Object.keys(searchQueries)[index]] && (
-                        <input
-                          type="text"
-                          placeholder={`Search ${header}`}
-                          style={styles.searchInput}
-                          value={searchQueries[Object.keys(searchQueries)[index]]}
-                          onChange={(e) => handleSearchChange(e, Object.keys(searchQueries)[index])}
-                        />
-                      )}
-                    </>
-                  )}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {
-              filteredDetails.map((teacher, index) => (
-                <tr
-                  key={teacher.teacherId}
-                  style={index % 2 === 0 ? styles.evenRow : styles.oddRow}
-                >
-                  <td style={styles.td}>{teacher.teacherId}</td>
-                  <td style={styles.td}>{teacher.teacherName}</td>
-                  <td style={styles.td}>{teacher.email}</td>
-                  <td style={styles.td}>{teacher.teacherMNo}</td>
-                  <td style={styles.td}>{teacher.classId.join(', ')}</td>
-                  <td style={styles.iconContainer}>
-                    <FaEye onClick={() => { handleOpenModal('view', teacher) }} style={styles.icon} size={24} color='#555' />
-                    <FaEdit onClick={() => { handleOpenModal('edit', teacher) }} style={styles.icon} size={24} color='#555' />
-                    <FaTimes onClick={() => { handleOpenModal('delete', teacher) }} style={styles.icon} size={24} color='#555' />
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </div>
-      <div style={styles.print}>
-        <button onClick={handlePrint} style={styles.backButton}>
-          Print
-        </button>
+      <div>
+        <div style={styles.subContainer}>
+          <h1 style={styles.heading}>Teacher Details</h1>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                {headers.map((header, index) => (
+                  <th style={styles.th} key={header}>
+                    {index < headers.length - 1 && (
+                      <>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          {header}
+                          <FaSearch
+                            color='#555'
+                            style={styles.searchIcon}
+                            onClick={() => toggleSearchField(Object.keys(searchQueries)[index])}
+                          />
+                        </div>
+                        {visibleSearchFields[Object.keys(searchQueries)[index]] && (
+                          <input
+                            type="text"
+                            placeholder={`Search ${header}`}
+                            style={styles.searchInput}
+                            value={searchQueries[Object.keys(searchQueries)[index]]}
+                            onChange={(e) => handleSearchChange(e, Object.keys(searchQueries)[index])}
+                          />
+                        )}
+                      </>
+                    )}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {
+                filteredDetails.map((teacher, index) => (
+                  <tr
+                    key={teacher.teacherId}
+                    style={index % 2 === 0 ? styles.evenRow : styles.oddRow}
+                  >
+                    <td style={styles.td}>{teacher.teacherId}</td>
+                    <td style={styles.td}>{teacher.teacherName}</td>
+                    <td style={styles.td}>{teacher.email}</td>
+                    <td style={styles.td}>{teacher.teacherMNo}</td>
+                    <td style={styles.td}>{teacher.classId.join(', ')}</td>
+                    <td style={styles.iconContainer}>
+                      <FaEye onClick={() => { handleOpenModal('view', teacher) }} style={styles.icon} size={24} color='#555' />
+                      <FaEdit onClick={() => { handleOpenModal('edit', teacher) }} style={styles.icon} size={24} color='#555' />
+                      <FaTimes onClick={() => { handleOpenModal('delete', teacher) }} style={styles.icon} size={24} color='#555' />
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <div style={styles.print}>
+          <button onClick={handlePrint} style={styles.backButton}>
+            Print
+          </button>
+        </div>
       </div>
       <Footer />
       {isModalOpen && (
@@ -327,6 +316,7 @@ const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
     maxWidth: "95%",
     minHeight: '85vh',
     padding: "20px",
@@ -565,10 +555,10 @@ const headerStyles = {
     cursor: "pointer",
     transition: "background-color 0.3s, transform 0.3s",
   },
-  buttonContainer:{
-    width:'18%',
-    display:'flex',
-    justifyContent:'space-between'
+  buttonContainer: {
+    width: '18%',
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 }
 

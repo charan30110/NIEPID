@@ -15,7 +15,7 @@ const checkUser = async (req, res) => {
                 if (!err) {
                     res.cookie("jwt", token, {
                         path: "/",
-                        maxAge: 3600*1000
+                        maxAge: 2*3600*1000
                     })
                     res.status(200).json({ status: "success", token, role, userId })
                 }
@@ -29,6 +29,7 @@ const checkUser = async (req, res) => {
 
     }
     catch (error) {
+        console.log(error)
         res.status(500).json("Internal Server Error")
     }
 }

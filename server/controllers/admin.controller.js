@@ -102,7 +102,7 @@ const registerBulkTeacher = async (req, res) => {
 
         for (const row in jsonData) {
             const session = await mongoose.startSession()
-            session.startTransaction()
+            await session.startTransaction()
             try {
                 if (arr[row]) {
                     const teacher = {
@@ -132,9 +132,9 @@ const registerBulkTeacher = async (req, res) => {
                     }
                     uploaded++;
                 }
-                session.commitTransaction()
+                await session.commitTransaction()
             } catch (error) {
-                session.abortTransaction()
+                await session.abortTransaction()
             } finally {
                 session.endSession()
             }
@@ -165,13 +165,45 @@ const updateSingleTeacher = async (req, res) => {
     session.startTransaction()
     try {
         const { selectedTeacherDetails, method } = req.body;
-        
+
         res.status(200).send("success")
-        session.commitTransaction()
+        await session.commitTransaction()
     } catch (error) {
-        session.abortTransaction()
+        await session.abortTransaction()
         console.log(error)
         res.status(500).send("Error updating Teacher")
+    } finally {
+        session.endSession()
+    }
+}
+
+const registerStudent = async (req, res) => {
+    const session = await mongoose.startSession()
+    await session.startTransaction()
+    try {
+        const data = req.body;
+        const classId = data.stdCred.section + '-' + data.stdCred.year;
+        let stdDetails = await studentDetailsModel.findOne({ 'info.regNo': data.details.info.regNo })
+        let std = await studentModel.findOne({ 'regNo': data.details.info.regNo })
+        let cls = await classModel.findOne({ 'classId': classId })
+
+        if (std || stdDetails) {
+            console.log("Student already exists")
+            return res.status(400).send("Student already exist")
+        } else if (!cls) {
+            console.log("Class doesn't exist")
+            return res.status(400).send("Class doesn't exist")
+        } else {
+            //create student, studentDetails, users
+            //update class
+            session.abortTransaction()
+            return res.status(200).send("success")
+        }
+    }
+    catch (error) {
+        session.abortTransaction()
+        console.log(error)
+        res.status(500).send(error)
     } finally {
         session.endSession()
     }
@@ -182,4 +214,5 @@ module.exports = {
     registerBulkTeacher,
     viewTeachers,
     updateSingleTeacher,
+    registerStudent,
 }
